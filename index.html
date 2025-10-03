@@ -6,22 +6,41 @@
     <title>Adarsh Gram AI Monitor</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🏘️ Adarsh Gram Development Platform</h1>
-            <p>AI-Powered Village Infrastructure Monitoring</p>
-        </header>
-        
-        <div class="nav-tabs">
-            <div class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</div>
-            <div class="nav-tab" onclick="showTab('report')">📝 Report Issue</div>
-            <div class="nav-tab" onclick="showTab('projects')">🏗️ Projects</div>
-            <div class="nav-tab" onclick="showTab('map')">🗺️ Village Map</div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-village"></i>
+                <span>Adarsh Gram AI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" onclick="showTab('dashboard')">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                <a href="#" class="nav-link" onclick="showTab('report')">
+                    <i class="fas fa-edit"></i> Report Issue
+                </a>
+                <a href="#" class="nav-link" onclick="showTab('projects')">
+                    <i class="fas fa-hard-hat"></i> Projects
+                </a>
+                <a href="#" class="nav-link" onclick="showTab('map')">
+                    <i class="fas fa-map-marked-alt"></i> Village Map
+                </a>
+                <button class="login-btn" onclick="showTab('contractor-login')">
+                    <i class="fas fa-user-hard-hat"></i> Contractor Login
+                </button>
+            </div>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
+    </nav>
 
+    <div class="container">
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
             <h2>Village Infrastructure Status</h2>
@@ -61,12 +80,17 @@
             </div>
             
             <div class="form-group">
+                <label for="issue-location">Location (optional):</label>
+                <input type="text" id="issue-location" placeholder="Enter location or landmark">
+            </div>
+            
+            <div class="form-group">
                 <label for="issue-photo">Upload photo (optional):</label>
                 <input type="file" id="issue-photo" accept="image/*" capture="environment">
             </div>
             
             <button class="btn-primary" onclick="analyzeAndSubmitIssue()">
-                🚀 Submit with AI Analysis
+                <i class="fas fa-robot"></i> Submit with AI Analysis
             </button>
             
             <div id="ai-analysis-result" class="analysis-result"></div>
@@ -75,13 +99,131 @@
         <!-- Projects Tab -->
         <div id="projects" class="tab-content">
             <h2>🏗️ Ongoing Development Projects</h2>
+            <div class="search-bar">
+                <input type="text" id="project-search" placeholder="Search projects...">
+                <button onclick="searchProjects()"><i class="fas fa-search"></i></button>
+            </div>
             <div id="project-list" class="project-grid"></div>
         </div>
 
-        <!-- Map Tab -->
+        <!-- Village Map Tab -->
         <div id="map" class="tab-content">
             <h2>🗺️ Village Infrastructure Map</h2>
+            <div class="map-controls">
+                <div class="search-bar">
+                    <input type="text" id="map-search" placeholder="Search village or location...">
+                    <button onclick="searchOnMap()"><i class="fas fa-search"></i> Search</button>
+                </div>
+                <button class="btn-secondary" onclick="focusOnAllIssues()">
+                    <i class="fas fa-crosshairs"></i> Show All Issues
+                </button>
+            </div>
             <div id="village-map"></div>
+        </div>
+
+        <!-- Contractor Login Tab -->
+        <div id="contractor-login" class="tab-content">
+            <div class="login-container">
+                <div class="login-card">
+                    <h2><i class="fas fa-user-hard-hat"></i> Contractor Login</h2>
+                    <form id="contractor-login-form">
+                        <div class="form-group">
+                            <label for="contractor-username">Username:</label>
+                            <input type="text" id="contractor-username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contractor-password">Password:</label>
+                            <input type="password" id="contractor-password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="#" onclick="showTab('admin-dashboard')">Contact Admin</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard Tab -->
+        <div id="admin-dashboard" class="tab-content">
+            <div class="admin-container">
+                <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+                <div class="admin-actions">
+                    <div class="admin-card">
+                        <h3>Register New Contractor</h3>
+                        <form id="register-contractor-form">
+                            <div class="form-group">
+                                <label for="contractor-name">Contractor Name:</label>
+                                <input type="text" id="contractor-name" placeholder="Enter contractor name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractor-email">Email:</label>
+                                <input type="email" id="contractor-email" placeholder="Enter email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractor-phone">Phone:</label>
+                                <input type="tel" id="contractor-phone" placeholder="Enter phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractor-specialization">Specialization:</label>
+                                <select id="contractor-specialization" required>
+                                    <option value="">Select specialization</option>
+                                    <option value="water">Water Infrastructure</option>
+                                    <option value="roads">Road Construction</option>
+                                    <option value="electricity">Electrical Works</option>
+                                    <option value="buildings">Building Construction</option>
+                                    <option value="sanitation">Sanitation</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-user-plus"></i> Register Contractor
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <h3>Manage Contractors</h3>
+                        <div id="contractors-list" class="contractors-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contractor Dashboard Tab -->
+        <div id="contractor-dashboard" class="tab-content">
+            <div class="contractor-container">
+                <div class="contractor-header">
+                    <h2><i class="fas fa-tools"></i> Contractor Dashboard</h2>
+                    <div class="contractor-info">
+                        <span id="contractor-welcome">Welcome, Contractor!</span>
+                        <button class="btn-secondary" onclick="logoutContractor()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="contractor-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="assigned-projects">0</div>
+                        <div class="stat-label">Assigned Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completed-projects">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="in-progress-projects">0</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                </div>
+
+                <div class="projects-section">
+                    <h3>Your Assigned Projects</h3>
+                    <div id="contractor-projects" class="project-grid"></div>
+                </div>
+            </div>
         </div>
     </div>
 
