@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adarsh Gram AI Monitor</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏘️ Adarsh Gram Development Platform</h1>
+            <p>AI-Powered Village Infrastructure Monitoring</p>
+        </header>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</div>
+            <div class="nav-tab" onclick="showTab('report')">📝 Report Issue</div>
+            <div class="nav-tab" onclick="showTab('projects')">🏗️ Projects</div>
+            <div class="nav-tab" onclick="showTab('map')">🗺️ Village Map</div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <h2>Village Infrastructure Status</h2>
+            <div id="ai-insights">
+                <div class="insight-card">
+                    <h3>🤖 AI Priority Alert</h3>
+                    <p id="priority-message">Analyzing village needs...</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="project-count">0</div>
+                    <div class="stat-label">Active Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="issue-count">0</div>
+                    <div class="stat-label">Issues Reported</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completion-rate">0%</div>
+                    <div class="stat-label">Avg Completion</div>
+                </div>
+            </div>
+            
+            <div class="recent-activity">
+                <h3>Recent AI Analysis</h3>
+                <div id="recent-issues-list"></div>
+            </div>
+        </div>
+
+        <!-- Report Issue Tab -->
+        <div id="report" class="tab-content">
+            <h2>📝 Report Infrastructure Issue</h2>
+            <div class="form-group">
+                <label for="issue-text">Describe the issue:</label>
+                <textarea id="issue-text" placeholder="Example: 'Water pump not working near school building. Children facing difficulties...'" rows="4"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="issue-photo">Upload photo (optional):</label>
+                <input type="file" id="issue-photo" accept="image/*" capture="environment">
+            </div>
+            
+            <button class="btn-primary" onclick="analyzeAndSubmitIssue()">
+                🚀 Submit with AI Analysis
+            </button>
+            
+            <div id="ai-analysis-result" class="analysis-result"></div>
+        </div>
+
+        <!-- Projects Tab -->
+        <div id="projects" class="tab-content">
+            <h2>🏗️ Ongoing Development Projects</h2>
+            <div id="project-list" class="project-grid"></div>
+        </div>
+
+        <!-- Map Tab -->
+        <div id="map" class="tab-content">
+            <h2>🗺️ Village Infrastructure Map</h2>
+            <div id="village-map"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
